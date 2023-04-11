@@ -20,11 +20,22 @@ def load_rest_data(db):
     cur = conn.cursor()
 
     outerdict = {}
-    lstkeys = cur.execute("SELECT name,  FROM restaurants").fetchall()
-    for key in lstkeys:
-        outerdict[key] = 
+    lstall = cur.execute("SELECT name, category_id, building_id, rating FROM restaurants").fetchall()
+    for each in lstall:
+        innerd = {}
+        name = each[0]
+        cat = each[1]
+        category = cur.execute("SELECT category FROM categories WHERE categories.id = ?", [cat]).fetchone()[0]
+        build = each[2]
+        building = cur.execute("SELECT building FROM buildings WHERE buildings.id = ?", [build]).fetchone()[0]
+        rating = each[3]
+        for x in range(len(lstall)-1):
+            innerd["category"] = category
+            innerd["building"] = building
+            innerd["rating"] = rating
+        outerdict[name] = innerd
     conn.commit()
-    pass
+    return outerdict
 
 def plot_rest_categories(db):
     """
