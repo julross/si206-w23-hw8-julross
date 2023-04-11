@@ -47,23 +47,17 @@ def plot_rest_categories(db):
     conn = sqlite3.connect(path+'/'+db)
     cur = conn.cursor()
 
-    lstcafes = []
     dict1 = {}
-    # lstall = cur.execute("SELECT name, category_id, building_id, rating FROM restaurants").fetchall()
     category = cur.execute("SELECT category FROM categories").fetchall()
     categoryid = cur.execute("SELECT * FROM categories").fetchall()
     # print(category)
     # print(categoryid)
-    for t in category:
-        for word in t:
-            lstcafes.append(word)
     for each in categoryid:
         id = each[0]
         cat = each[1]
         count1 = cur.execute("SELECT COUNT(category_id) FROM restaurants WHERE restaurants.category_id = ?", [id]).fetchone()[0]
-    print(count1)
-    for y in range(len(categoryid)-1):
-        dict1[cat] = count1
+        for y in range(len(categoryid)-1):
+            dict1[cat] = count1
     conn.commit()
     return dict1
 
