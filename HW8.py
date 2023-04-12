@@ -1,7 +1,7 @@
 # Your name: Julianna Ross 
 # Your student id: 05267648 
 # Your email: julross@umich.edu
-# List who you have worked with on this homework:
+# List who you have worked with on this homework: Meghan Levitt, Claire Callen
 
 import matplotlib.pyplot as plt
 import numpy as np 
@@ -85,8 +85,13 @@ def find_rest_in_building(building_num, db):
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db)
     cur = conn.cursor()
-
-    pass
+    lstrest = []
+    find = cur.execute('SELECT Restaurants.name FROM Restaurants JOIN Buildings WHERE Buildings.id = Restaurants.building_id AND Buildings.building = {} ORDER BY Restaurants.rating DESC'.format(building_num)).fetchall()
+    for rest in find:
+        lstrest.append(rest[0])
+    # print(lstrest)
+    conn.commit()
+    return lstrest
 
 #EXTRA CREDIT
 def get_highest_rating(db): #Do this through DB as well
