@@ -4,6 +4,7 @@
 # List who you have worked with on this homework:
 
 import matplotlib.pyplot as plt
+import numpy as np 
 import os
 import sqlite3
 import unittest
@@ -58,6 +59,20 @@ def plot_rest_categories(db):
         count1 = cur.execute("SELECT COUNT(category_id) FROM restaurants WHERE restaurants.category_id = ?", [id]).fetchone()[0]
         for y in range(len(categoryid)-1):
             dict1[cat] = count1
+    sortvals = sorted(dict1.items(), key = lambda x: x[1])
+    xvals = []
+    yvals = []
+    for tup in sortvals:
+        xvals.append(tup[-1])
+        yvals.append(tup[0])
+    yaxis = np.array(yvals)
+    xaxis = np.array(xvals)
+    plt.figure(figsize=(18,5))
+    plt.barh(yaxis, xaxis)
+    plt.xlabel("Number of Restaurants")
+    plt.ylabel("Restaurant Categories")
+    plt.title("Types of Restaurants on South University Ave")
+    plt.show()
     conn.commit()
     return dict1
 
